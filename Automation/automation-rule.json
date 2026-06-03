@@ -1,0 +1,21 @@
+{
+  "name": "Run-ChatGPT-Playbook-On-Incident",
+  "properties": {
+    "displayName": "Run ChatGPT SOC Playbook",
+    "enabled": true,
+    "order": 1,
+    "actions": [
+      {
+        "actionType": "RunPlaybook",
+        "workflowId": "/subscriptions/<SUB_ID>/resourceGroups/<RG>/providers/Microsoft.Logic/workflows/chatgpt-incident-playbook"
+      }
+    ],
+    "conditions": [
+      {
+        "property": "IncidentStatus",
+        "operator": "NotEquals",
+        "value": "Closed"
+      }
+    ]
+  }
+}
