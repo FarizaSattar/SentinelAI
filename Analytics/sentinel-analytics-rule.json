@@ -1,0 +1,14 @@
+{
+  "displayName": "Suspicious Sign-In Detection",
+  "severity": "High",
+  "enabled": true,
+  "query": "
+SigninLogs
+| where ResultType != 0
+| where Location != 'CA'
+| project TimeGenerated, UserPrincipalName, IPAddress, Location
+",
+  "queryFrequency": "PT5M",
+  "queryPeriod": "PT5M",
+  "triggerThreshold": 1
+}
