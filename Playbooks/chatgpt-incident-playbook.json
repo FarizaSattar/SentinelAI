@@ -1,0 +1,52 @@
+{
+  "definition": {
+    "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+    "actions": {
+      "Parse_Incident": {
+        "type": "ParseJson",
+        "inputs": {
+          "content": "@triggerBody()"
+        }
+      },
+
+      "Call_OpenAI": {
+        "type": "Http",
+        "inputs": {
+          "method": "POST",
+          "uri": "https://api.openai.com/v1/chat/completions",
+          "headers": {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer <OPENAI_API_KEY>"
+          },
+          "body": {
+            "model": "gpt-4o-mini",
+            "messages": [
+              {
+                "role": "system",
+                "content": "You are a SOC analyst. Analyze incidents and provide IOCs, attack type, and remediation steps."
+              },
+              {
+                "role": "user",
+                "content": "Analyze this incident: @{triggerBody()}"
+              }
+            ]
+          }
+        }
+      },
+
+      "Post_Comment_To_Incident": {
+        "type": "Http",
+        "inputs": {
+          "method": "POST",
+          "uri": "https://management.azure.com/<sentinel_incident_endpoint>",
+          "headers": {
+            "Content-Type": "application/json"
+          },
+          "body": {
+            "comment": "@{body('Call_OpenAI')}"
+          }
+        }
+      }
+    }
+  }
+}
