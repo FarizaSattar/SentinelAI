@@ -1,5 +1,3 @@
-# 📄 Docs/incident-response-flow.md
-
 # 🚨 Incident Response Flow
 
 ## 🔍 Step 1: Detection
