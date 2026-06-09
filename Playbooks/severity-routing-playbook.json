@@ -1,1 +1,78 @@
-
+{
+  "definition": {
+    "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+    "contentVersion": "1.0.0.0",
+    "triggers": {
+      "When_an_incident_is_updated": {
+        "type": "Request",
+        "kind": "Http"
+      }
+    },
+    "actions": {
+      "Evaluate_Severity": {
+        "type": "Switch",
+        "expression": "@triggerBody()?['severity']",
+        "cases": {
+          "High": {
+            "actions": {
+              "Add_Tag": {
+                "type": "Http",
+                "inputs": {
+                  "method": "POST",
+                  "uri": "https://management.azure.com/<INCIDENT_ENDPOINT>/tags",
+                  "headers": {
+                    "Content-Type": "application/json"
+                  },
+                  "body": {
+                    "tag": "AI-High-Severity"
+                  }
+                }
+              },
+              "Notify_SecOps": {
+                "type": "Http",
+                "inputs": {
+                  "method": "POST",
+                  "uri": "https://example-secops-webhook.com/notify",
+                  "headers": {
+                    "Content-Type": "application/json"
+                  },
+                  "body": {
+                    "message": "High severity incident detected in SentinelAI"
+                  }
+                }
+              }
+            }
+          },
+          "Critical": {
+            "actions": {
+              "Notify_Incident_Response_Team": {
+                "type": "Http",
+                "inputs": {
+                  "method": "POST",
+                  "uri": "https://example-irt-webhook.com/notify",
+                  "body": {
+                    "message": "CRITICAL incident detected - immediate response required"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "default": {
+          "actions": {
+            "Log_Incident": {
+              "type": "Http",
+              "inputs": {
+                "method": "POST",
+                "uri": "https://example-log-endpoint.com/log",
+                "body": {
+                  "message": "Incident logged with no escalation"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
