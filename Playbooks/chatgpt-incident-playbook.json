@@ -1,49 +1,67 @@
 {
   "definition": {
     "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+    "contentVersion": "1.0.0.0",
+    "triggers": {
+      "When_an_incident_is_created": {
+        "type": "Request",
+        "kind": "Http"
+      }
+    },
     "actions": {
       "Parse_Incident": {
         "type": "ParseJson",
         "inputs": {
-          "content": "@triggerBody()"
-        }
-      },
-
-      "Call_OpenAI": {
-        "type": "Http",
-        "inputs": {
-          "method": "POST",
-          "uri": "https://api.openai.com/v1/chat/completions",
-          "headers": {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer <OPENAI_API_KEY>"
-          },
-          "body": {
-            "model": "gpt-4o-mini",
-            "messages": [
-              {
-                "role": "system",
-                "content": "You are a SOC analyst. Analyze incidents and provide IOCs, attack type, and remediation steps."
-              },
-              {
-                "role": "user",
-                "content": "Analyze this incident: @{triggerBody()}"
-              }
-            ]
+          "content": "@triggerBody()",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "incidentId": { "type": "string" },
+              "title": { "type": "string" },
+              "description": { "type": "string" },
+              "severity": { "type": "string" },
+              "status": { "type": "string" }
+            }
           }
         }
       },
-
+      "Call_Azure_OpenAI": {
+        "type": "Http",
+        "inputs": {
+          "method": "POST",
+          "uri": "https://<AZURE_OPENAI_ENDPOINT>/openai/deployments/<DEPLOYMENT_NAME>/chat/completions?api-version=2024-02-15-preview",
+          "headers": {
+            "Content-Type": "application/json",
+            "api-key": "<AZURE_OPENAI_KEY>"
+          },
+          "body": {
+            "messages": [
+              {
+                "role": "system",
+                "content": "You are a SOC analyst. Analyze security incidents and return structured JSON with: summary, attack_type, severity, iocs, mitre_mapping, and recommendations."
+              },
+              {
+                "role": "user",
+                "content": "@{triggerBody()}"
+              }
+            ],
+            "temperature": 0.2,
+            "max_tokens": 1000
+          }
+        }
+      },
       "Post_Comment_To_Incident": {
         "type": "Http",
         "inputs": {
           "method": "POST",
-          "uri": "https://management.azure.com/<sentinel_incident_endpoint>",
+          "uri": "https://management.azure.com/<INCIDENT_ENDPOINT>",
           "headers": {
             "Content-Type": "application/json"
           },
           "body": {
-            "comment": "@{body('Call_OpenAI')}"
+            "properties": {
+              "message": "@{body('Call_Azure_OpenAI')?['choices'][0]?['message']?['content']}"
+            }
           }
         }
       }
