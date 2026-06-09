@@ -1,4 +1,3 @@
-```json
 {
   "displayName": "Suspicious Sign-In Detection",
   "description": "Detects repeated failed sign-in attempts from external locations that may indicate credential attacks or unauthorized access attempts.",
@@ -34,4 +33,3 @@
     "FailedAttempts": "FailedAttempts"
   }
 }
-```
