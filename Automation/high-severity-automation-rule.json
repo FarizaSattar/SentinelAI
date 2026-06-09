@@ -1,1 +1,29 @@
-
+{
+  "name": "Escalate-High-Severity-Incidents",
+  "properties": {
+    "displayName": "High Severity Escalation Rule",
+    "enabled": true,
+    "order": 2,
+    "conditions": [
+      {
+        "property": "Severity",
+        "operator": "Equals",
+        "value": "High"
+      }
+    ],
+    "actions": [
+      {
+        "actionType": "AddTag",
+        "tagName": "AI-High-Severity"
+      },
+      {
+        "actionType": "AssignOwner",
+        "owner": "Tier2SOC"
+      },
+      {
+        "actionType": "RunPlaybook",
+        "workflowId": "/subscriptions/<SUBSCRIPTION_ID>/resourceGroups/<RESOURCE_GROUP>/providers/Microsoft.Logic/workflows/chatgpt-incident-playbook"
+      }
+    ]
+  }
+}
