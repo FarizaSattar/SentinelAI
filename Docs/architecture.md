@@ -1,5 +1,3 @@
-# 📄 Docs/architecture.md
-
 # 🏗️ Architecture Overview
 
 ## 🔄 High-Level Flow
