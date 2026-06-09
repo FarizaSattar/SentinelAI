@@ -1,15 +1,15 @@
-# 🚀 Deployment Guide
+# 🚀 Deployment Guide (SentinelAI)
 
 ## 🧾 Prerequisites
 
 Before deploying SentinelAI, ensure you have:
 
-- Azure Subscription
-- Microsoft Sentinel enabled
-- Log Analytics Workspace
-- Azure OpenAI resource
-- Azure Logic Apps access
-- Contributor / Security Admin permissions
+- Azure Subscription  
+- Microsoft Sentinel enabled  
+- Log Analytics Workspace  
+- Azure OpenAI resource  
+- Azure Logic Apps access  
+- Contributor / Security Admin permissions  
 
 ---
 
@@ -18,7 +18,7 @@ Before deploying SentinelAI, ensure you have:
 1. Go to Azure Portal  
 2. Open Log Analytics Workspace  
 3. Enable Microsoft Sentinel  
-4. Connect data sources (Azure AD, SignInLogs, etc.)
+4. Connect data sources (Azure AD, SignInLogs, etc.)  
 
 ---
 
@@ -26,9 +26,9 @@ Before deploying SentinelAI, ensure you have:
 
 Import KQL rules from:
 
-
+```
 /Analytics/
-
+```
 
 Deploy:
 - suspicious-signin-rule.json  
@@ -41,9 +41,9 @@ Deploy:
 
 Import rules from:
 
-
+```
 /Automation/
-
+```
 
 Enable:
 - Incident triggering rules  
@@ -55,9 +55,9 @@ Enable:
 
 Import:
 
-
+```
 /Playbooks/
-
+```
 
 Configure:
 - Azure OpenAI endpoint  
@@ -71,14 +71,14 @@ Configure:
 
 Create `.env` from `.env.example`:
 
-
+```env
 AZURE_OPENAI_ENDPOINT=
 AZURE_OPENAI_API_KEY=
 SENTINEL_WORKSPACE_ID=
 AZURE_SUBSCRIPTION_ID=
 AZURE_TENANT_ID=
 LOGIC_APP_URL=
-
+```
 
 ---
 
@@ -99,3 +99,4 @@ LOGIC_APP_URL=
 - AI returns structured response  
 - IOC + MITRE mapping generated  
 - Incident enriched automatically  
+```
