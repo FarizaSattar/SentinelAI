@@ -1,1 +1,36 @@
-
+{
+  "displayName": "Impossible Travel Detection",
+  "description": "Detects successful sign-ins from geographically distant locations within a short timeframe, indicating potential account compromise or session hijacking.",
+  "severity": "Medium",
+  "enabled": true,
+  "query": "SigninLogs | where TimeGenerated >= ago(24h) | where ResultType == 0 | summarize Countries=make_set(Location), CountryCount=dcount(Location), IPs=make_set(IPAddress,20) by UserPrincipalName, bin(TimeGenerated, 1h) | where CountryCount >= 2",
+  "queryFrequency": "PT1H",
+  "queryPeriod": "PT24H",
+  "triggerOperator": "GreaterThan",
+  "triggerThreshold": 0,
+  "suppressionEnabled": true,
+  "suppressionDuration": "PT4H",
+  "eventGroupingSettings": {
+    "aggregationKind": "SingleAlert"
+  },
+  "tactics": [
+    "CredentialAccess",
+    "DefenseEvasion"
+  ],
+  "techniques": [
+    "T1078"
+  ],
+  "incidentConfiguration": {
+    "createIncident": true,
+    "groupingConfiguration": {
+      "enabled": true,
+      "lookbackDuration": "PT24H",
+      "matchingMethod": "Selected"
+    }
+  },
+  "customDetails": {
+    "User": "UserPrincipalName",
+    "Countries": "Countries",
+    "CountryCount": "CountryCount"
+  }
+}
