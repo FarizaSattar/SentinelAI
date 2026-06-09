@@ -1,1 +1,15 @@
+# Core dependencies
+requests>=2.31.0
+python-dotenv>=1.0.1
 
+# Data processing
+pydantic>=2.5.0
+
+# Optional (useful for SOC enrichment pipelines)
+numpy>=1.26.0
+
+# Logging & utilities
+rich>=13.7.0
+
+# HTTP retries (more robust API calls)
+urllib3>=2.0.0
