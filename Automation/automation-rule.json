@@ -1,20 +1,20 @@
 {
-  "name": "Run-ChatGPT-Playbook-On-Incident",
+  "name": "Run-AI-Incident-Playbook",
   "properties": {
-    "displayName": "Run ChatGPT SOC Playbook",
+    "displayName": "Run AI Incident Enrichment Playbook",
     "enabled": true,
     "order": 1,
-    "actions": [
-      {
-        "actionType": "RunPlaybook",
-        "workflowId": "/subscriptions/<SUB_ID>/resourceGroups/<RG>/providers/Microsoft.Logic/workflows/chatgpt-incident-playbook"
-      }
-    ],
     "conditions": [
       {
         "property": "IncidentStatus",
         "operator": "NotEquals",
         "value": "Closed"
+      }
+    ],
+    "actions": [
+      {
+        "actionType": "RunPlaybook",
+        "workflowId": "/subscriptions/<SUBSCRIPTION_ID>/resourceGroups/<RESOURCE_GROUP>/providers/Microsoft.Logic/workflows/chatgpt-incident-playbook"
       }
     ]
   }
