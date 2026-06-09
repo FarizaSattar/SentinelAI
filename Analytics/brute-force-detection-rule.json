@@ -1,1 +1,36 @@
-
+{
+  "displayName": "Brute Force Authentication Detection",
+  "description": "Detects high volumes of failed authentication attempts from a single IP address targeting one or more user accounts, indicating possible brute force or password spraying activity.",
+  "severity": "High",
+  "enabled": true,
+  "query": "SigninLogs | where TimeGenerated >= ago(30m) | where ResultType != 0 | summarize FailedAttempts=count(), TargetedAccounts=dcount(UserPrincipalName), Accounts=make_set(UserPrincipalName,20) by IPAddress, bin(TimeGenerated, 15m) | where FailedAttempts >= 20 or TargetedAccounts >= 5",
+  "queryFrequency": "PT15M",
+  "queryPeriod": "PT30M",
+  "triggerOperator": "GreaterThan",
+  "triggerThreshold": 0,
+  "suppressionEnabled": true,
+  "suppressionDuration": "PT2H",
+  "eventGroupingSettings": {
+    "aggregationKind": "SingleAlert"
+  },
+  "tactics": [
+    "CredentialAccess"
+  ],
+  "techniques": [
+    "T1110",
+    "T1110.003"
+  ],
+  "incidentConfiguration": {
+    "createIncident": true,
+    "groupingConfiguration": {
+      "enabled": true,
+      "lookbackDuration": "PT24H",
+      "matchingMethod": "AllEntities"
+    }
+  },
+  "customDetails": {
+    "SourceIP": "IPAddress",
+    "FailedAttempts": "FailedAttempts",
+    "TargetedAccounts": "TargetedAccounts"
+  }
+}
