@@ -1,37 +1,53 @@
 import json
 
-def extract_iocs(text):
-    iocs = {
-        "ips": [],
-        "domains": []
+from ioc_extractor import extract_iocs
+from mitre_mapper import map_mitre
+from severity_scorer import score_severity
+
+
+def enrich_incident(incident: dict) -> dict:
+    """
+    Enrich Sentinel incident with:
+    - IOC extraction
+    - MITRE mapping
+    - Risk scoring
+    - Response recommendations
+    """
+
+    description = incident.get("description", "")
+    severity = incident.get("severity", "Low")
+
+    iocs = extract_iocs(description)
+    mitre = map_mitre(description)
+
+    ioc_count = len(iocs["ips"]) + len(iocs["domains"]) + len(iocs["hashes"])
+
+    risk_score = score_severity(severity, ioc_count)
+
+    return {
+        "title": incident.get("title"),
+        "severity": severity,
+        "risk_score": risk_score,
+        "summary": description,
+        "iocs": iocs,
+        "mitre": mitre,
+        "recommendations": [
+            "Review authentication logs",
+            "Check source IP reputation",
+            "Block malicious indicators",
+            "Reset compromised credentials if needed",
+            "Enforce MFA",
+            "Investigate lateral movement"
+        ]
     }
-
-    for word in text.split():
-        if word.count(".") == 3:
-            iocs["ips"].append(word)
-        if "." in word and len(word) > 4:
-            iocs["domains"].append(word)
-
-    return iocs
-
-
-def format_incident(incident_json):
-    summary = f"""
-SOC INCIDENT SUMMARY
---------------------
-Title: {incident_json.get('title')}
-Severity: {incident_json.get('severity')}
-Description: {incident_json.get('description')}
-"""
-    return summary
 
 
 if __name__ == "__main__":
     sample = {
-        "title": "Suspicious Login",
+        "title": "Suspicious Login Activity",
         "severity": "High",
-        "description": "Multiple failed logins from foreign IP"
+        "description": "Multiple failed logins from 185.34.22.11 targeting login.microsoftonline.com"
     }
 
-    print(format_incident(sample))
-    print(extract_iocs(sample["description"]))
+    result = enrich_incident(sample)
+    print(json.dumps(result, indent=2))
