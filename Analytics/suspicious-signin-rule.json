@@ -1,14 +1,37 @@
+```json
 {
   "displayName": "Suspicious Sign-In Detection",
+  "description": "Detects repeated failed sign-in attempts from external locations that may indicate credential attacks or unauthorized access attempts.",
   "severity": "High",
   "enabled": true,
-  "query": "
-SigninLogs
-| where ResultType != 0
-| where Location != 'CA'
-| project TimeGenerated, UserPrincipalName, IPAddress, Location
-",
+  "query": "SigninLogs | where TimeGenerated >= ago(15m) | where ResultType != 0 | where Location !in ('Canada') | summarize FailedAttempts=count(), DistinctIPs=dcount(IPAddress), IPs=make_set(IPAddress,10) by UserPrincipalName, Location, bin(TimeGenerated, 5m) | where FailedAttempts >= 5",
   "queryFrequency": "PT5M",
-  "queryPeriod": "PT5M",
-  "triggerThreshold": 1
+  "queryPeriod": "PT15M",
+  "triggerOperator": "GreaterThan",
+  "triggerThreshold": 0,
+  "suppressionEnabled": true,
+  "suppressionDuration": "PT1H",
+  "eventGroupingSettings": {
+    "aggregationKind": "SingleAlert"
+  },
+  "tactics": [
+    "CredentialAccess"
+  ],
+  "techniques": [
+    "T1110"
+  ],
+  "incidentConfiguration": {
+    "createIncident": true,
+    "groupingConfiguration": {
+      "enabled": true,
+      "lookbackDuration": "PT24H",
+      "matchingMethod": "AllEntities"
+    }
+  },
+  "customDetails": {
+    "User": "UserPrincipalName",
+    "Location": "Location",
+    "FailedAttempts": "FailedAttempts"
+  }
 }
+```
