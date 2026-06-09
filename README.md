@@ -1,5 +1,12 @@
 # 🛡️ SentinelAI
 
+<p align="left">
+  <img src="https://img.shields.io/badge/stack-Sentinel%20%7C%20Azure%20Sentinel%20%7C%20Azure%20OpenAI%20%7C%20Logic%20Apps-blue?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/system-AI%20SOC%20Automation%20Platform-success?style=for-the-badge" />
+</p>
+
+---
+
 ## 🤖 AI-Powered SOC Automation Platform
 
 SentinelAI is a cloud-native cybersecurity automation platform that integrates Microsoft Sentinel, Azure Logic Apps, and Azure OpenAI to automate incident triage, threat enrichment, and response recommendations.
