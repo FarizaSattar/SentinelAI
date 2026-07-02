@@ -1,4 +1,4 @@
-## 🎯 Project Overview
+# 🎯 Project Overview
 
 Every day, organizations generate thousands of security events from endpoints, firewalls, cloud services, identity providers, and applications. A Security Information and Event Management (SIEM) platform such as Microsoft Sentinel collects these logs and creates alerts when suspicious activity is detected.
 
