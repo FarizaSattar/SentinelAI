@@ -1,398 +1,207 @@
-# 🛡️ SentinelAI
+## 🎯 Project Overview
 
-<p align="left">
-  <img src="https://img.shields.io/badge/stack-Sentinel%20%7C%20Azure%20Sentinel%20%7C%20Azure%20OpenAI%20%7C%20Logic%20Apps-blue?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/system-AI%20SOC%20Automation%20Platform-success?style=for-the-badge" />
-</p>
+Every day, organizations generate thousands of security events from endpoints, firewalls, cloud services, identity providers, and applications. A Security Information and Event Management (SIEM) platform such as Microsoft Sentinel collects these logs and creates alerts when suspicious activity is detected.
 
----
+The challenge is that not every alert represents a real attack. Security analysts must manually investigate each incident, determine its severity, gather additional context, and decide on the appropriate response. This process is repetitive, time-consuming, and often leads to alert fatigue—especially in environments that produce hundreds or thousands of alerts per day.
 
-## 🤖 AI-Powered SOC Automation Platform
+**SentinelAI** automates this investigation process by combining Microsoft Sentinel, Azure Logic Apps, and Azure OpenAI into an intelligent SOC automation platform.
 
-SentinelAI is a cloud-native cybersecurity automation platform that integrates Microsoft Sentinel, Azure Logic Apps, and Azure OpenAI to automate incident triage, threat enrichment, and response recommendations.
+Instead of requiring an analyst to manually review every incident, SentinelAI automatically gathers relevant incident details, sends them to an AI analysis engine, enriches the investigation with additional context, and generates actionable recommendations directly within Microsoft Sentinel.
 
-The platform simulates a modern Security Operations Center (SOC) workflow where security incidents are automatically analyzed, summarized, enriched, and routed to analysts with actionable intelligence.
+Rather than replacing security analysts, SentinelAI acts as an AI-powered assistant that accelerates investigations, standardizes incident triage, and reduces the time required to respond to potential threats.
 
 ---
 
-# 🚀 Why This Project Stands Out
+# ❓ Why SentinelAI?
 
-- ✔ End-to-end SIEM → SOAR → AI workflow
-- ✔ Microsoft Sentinel detection engineering
-- ✔ Azure Logic Apps orchestration
-- ✔ AI-powered incident triage
-- ✔ Automated IOC extraction
-- ✔ MITRE ATT&CK mapping support
-- ✔ Cloud-native security architecture
-- ✔ Enterprise SOC workflow simulation
-- ✔ KQL detection engineering
-- ✔ Production-style JSON automation templates
+Traditional Security Operations Centers face several challenges:
+
+* Large numbers of security alerts every day
+* Limited availability of experienced SOC analysts
+* Slow manual investigations
+* Inconsistent incident documentation
+* High operational costs
+* Alert fatigue caused by repetitive investigations
+
+SentinelAI addresses these challenges by automating the repetitive parts of incident response while keeping security analysts in control of remediation decisions.
+
+The result is:
+
+* Faster incident investigations
+* Better incident documentation
+* Consistent security recommendations
+* Reduced analyst workload
+* Improved response times
+* Scalable cloud-native automation
 
 ---
 
-# 🏗️ High-Level Architecture
+# 👥 Who Is This Project For?
 
-## 🔄 Security Incident Flow
+SentinelAI is designed for anyone interested in modern Security Operations Center (SOC) workflows, including:
 
-```text
-Microsoft Sentinel Alert
-          ↓
-KQL Analytics Rule
-          ↓
-Automation Rule Trigger
-          ↓
-Azure Logic App Playbook
-          ↓
-Azure OpenAI / GPT
-          ↓
-Threat Analysis Engine
-          ↓
-Incident Enrichment
-          ↓
-SOC Analyst Review
+* SOC Analysts
+* Security Engineers
+* Cloud Security Engineers
+* Cybersecurity Students
+* Microsoft Sentinel Administrators
+* DevSecOps Engineers
+* Managed Security Service Providers (MSSPs)
+
+The project also serves as a practical portfolio demonstrating SIEM, SOAR, cloud automation, and AI integration within Azure.
+
+---
+
+# 🚀 What Does SentinelAI Do?
+
+Once deployed, SentinelAI continuously monitors incidents created inside Microsoft Sentinel.
+
+Whenever a detection rule generates a new incident, the automation pipeline performs the following actions automatically:
+
+1. Microsoft Sentinel creates a security incident.
+2. An Automation Rule detects the new incident.
+3. Azure Logic Apps launches the investigation workflow.
+4. Incident details are collected, including:
+
+   * Alert title
+   * Severity
+   * User accounts
+   * Source IP addresses
+   * Host information
+   * Event timestamps
+   * Detection rule metadata
+5. The incident context is securely sent to Azure OpenAI.
+6. AI analyzes the incident and generates:
+
+   * Executive summary
+   * Attack classification
+   * Threat severity assessment
+   * MITRE ATT&CK techniques
+   * Indicators of Compromise (IOCs)
+   * Recommended investigation steps
+   * Suggested remediation actions
+7. The AI-generated analysis is automatically posted back into the Sentinel incident as comments or enrichment.
+8. Security analysts review the recommendations and determine whether additional investigation or containment actions are required.
+
+This process reduces the amount of manual work required for every security incident while providing analysts with consistent, structured intelligence.
+
+---
+
+# 🛠️ Prerequisites
+
+Before deploying SentinelAI, you will need access to the following Azure resources:
+
+### Required Azure Services
+
+* Microsoft Sentinel
+* Azure Log Analytics Workspace
+* Azure Logic Apps
+* Azure OpenAI Service
+* Azure Resource Group
+* Azure Subscription
+
+### Required Permissions
+
+Your Azure account should have permissions to:
+
+* Create Microsoft Sentinel Analytics Rules
+* Create Automation Rules
+* Deploy Logic Apps
+* Access Azure OpenAI
+* Create Managed Identities (optional)
+* Read and update Sentinel incidents
+
+### Recommended Knowledge
+
+While not required, familiarity with the following technologies will make deployment easier:
+
+* Microsoft Sentinel
+* Kusto Query Language (KQL)
+* Azure Portal
+* Azure Logic Apps
+* Azure OpenAI
+* Incident Response
+* Basic Cybersecurity Concepts
+
+---
+
+# 💡 How to Use SentinelAI
+
+After deployment, no manual interaction is required during normal operation.
+
+The platform works automatically whenever Microsoft Sentinel generates a new security incident.
+
+A typical workflow looks like this:
+
+```
+User Authentication Event
+           │
+           ▼
+Microsoft Sentinel Detection Rule
+           │
+           ▼
+Security Incident Created
+           │
+           ▼
+Automation Rule Triggered
+           │
+           ▼
+Logic App Executes
+           │
+           ▼
+Azure OpenAI Analysis
+           │
+           ▼
+AI Generates Investigation Report
+           │
+           ▼
+Incident Updated
+           │
+           ▼
+SOC Analyst Reviews Results
+           │
+           ▼
+Containment / Remediation
 ```
 
----
+From the analyst's perspective, the only interaction required is reviewing the AI-generated analysis and deciding whether to:
 
-# 🖼️ Architecture & Workflow
-
-## 🧠 SOC Automation Architecture
-
-```text
-[ Sentinel Alert ]
-        ↓
-[ Analytics Rule ]
-        ↓
-[ Automation Rule ]
-        ↓
-[ Logic App Playbook ]
-        ↓
-[ Azure OpenAI ]
-        ↓
-[ AI Analysis ]
-        ↓
-[ Incident Comment Update ]
-        ↓
-[ Analyst Review ]
-```
-
-## 🔄 Incident Response Workflow
-
-1. Detection rule triggers
-2. Sentinel creates an incident
-3. Automation Rule launches the playbook
-4. Logic App sends incident context to GPT
-5. AI returns summary, IOCs, severity, and recommendations
-6. Playbook posts enrichment back to the incident
-7. Analyst reviews and responds
+* Close the incident
+* Escalate the incident
+* Investigate further
+* Block malicious IPs
+* Reset compromised accounts
+* Trigger additional response actions
 
 ---
 
-# 🚨 Core Features
+# 📈 Example Scenario
 
-## 🛡️ Threat Detection
+Imagine an attacker attempts to brute-force a privileged account.
 
-- Suspicious sign-in detection
-- Impossible travel detection
-- Failed authentication monitoring
-- Custom KQL analytics rules
-- Real-time incident creation
+Without SentinelAI:
 
-## 🤖 AI Incident Triage
+* Alert appears in Sentinel.
+* Analyst opens the incident.
+* Analyst reviews logs.
+* Analyst identifies source IP.
+* Analyst researches attack pattern.
+* Analyst maps MITRE ATT&CK techniques.
+* Analyst documents findings.
+* Analyst recommends remediation.
 
-- Automatic incident summarization
-- Threat classification
-- Risk assessment
-- IOC extraction
-- Investigation guidance generation
+This process may take **15–30 minutes** per incident.
 
-## 📊 Threat Enrichment
+With SentinelAI:
 
-- IP extraction
-- Domain extraction
-- User activity analysis
-- Threat context generation
-- Attack pattern identification
+* Alert appears.
+* AI immediately analyzes the incident.
+* MITRE ATT&CK techniques are identified.
+* Indicators of Compromise are extracted.
+* Risk level is assessed.
+* Recommendations are generated.
+* Findings are posted directly into the incident.
 
-## ⚡ SOC Automation
+The analyst can begin investigating immediately with much of the repetitive analysis already completed, reducing investigation time to just a few minutes.
 
-- Automation Rule execution
-- Playbook orchestration
-- Incident enrichment
-- Comment injection
-- Reduced analyst workload
 
-## ☁️ Cloud-Native Security
-
-- Microsoft Sentinel
-- Azure Logic Apps
-- Azure OpenAI
-- REST API integrations
-- Serverless workflow automation
-
----
-
-# 🧠 Example AI Analysis
-
-## Input Incident
-
-```json
-{
-  "title": "Suspicious Login Activity",
-  "severity": "High",
-  "user": "admin@company.com",
-  "sourceIP": "185.34.22.11"
-}
-```
-
-## AI Output
-
-```yaml
-Attack Type:
-  Credential Access
-
-Threat Level:
-  High
-
-Indicators:
-  - 185.34.22.11
-
-MITRE ATT&CK:
-  - T1110 Brute Force
-
-Recommendations:
-  - Block source IP
-  - Reset credentials
-  - Enforce MFA
-  - Review authentication logs
-```
-
----
-
-# 🏗️ Technology Stack
-
-## SIEM / SOAR
-
-- Microsoft Sentinel
-- Azure Logic Apps
-- Azure Monitor
-- Log Analytics Workspace
-
-## AI Layer
-
-- Azure OpenAI
-- OpenAI API
-- GPT-4o
-- Prompt Engineering
-
-## Security Engineering
-
-- KQL
-- Incident Response
-- Threat Hunting
-- SOC Automation
-- MITRE ATT&CK
-
-## Development
-
-- Python
-- JSON
-- REST APIs
-- GitHub
-
----
-
-# 📁 Project Structure
-
-```text
-SentinelAI/
-│
-├── Analytics/
-│   ├── suspicious-signin-rule.json
-│   ├── impossible-travel-rule.json
-│   └── brute-force-detection-rule.json
-│
-├── Automation/
-│   ├── automation-rule.json
-│   └── high-severity-automation-rule.json
-│
-├── Playbooks/
-│   ├── chatgpt-incident-playbook.json
-│   └── severity-routing-playbook.json
-│
-├── Scripts/
-│   ├── enrich_incident.py
-│   ├── mitre_mapper.py
-│   ├── ioc_extractor.py
-│   └── severity_scorer.py
-│
-├── Docs/
-│   ├── incident-response-flow.md
-│   ├── architecture.md
-│   └── deployment-guide.md
-│
-├── .env.example
-├── requirements.txt
-├── LICENSE
-└── README.md
-```
-
----
-
-# 🔐 Security Design
-
-## Authentication & Access Control
-
-- Azure RBAC
-- Managed Identity Support
-- Role-Based Permissions
-- Workspace-Level Access Control
-
-## Data Protection
-
-- TLS Encryption
-- Secure API Communication
-- Azure Key Vault Integration
-- Secret Isolation
-- Audit Logging
-
-## AI Security
-
-- PII Filtering
-- Prompt Hardening
-- Response Validation
-- Enterprise Azure OpenAI Support
-- Human Analyst Verification
-
----
-
-# ⚙️ Deployment Guide
-
-## 1. Enable Microsoft Sentinel
-
-Create or use an existing Azure Log Analytics Workspace and enable Microsoft Sentinel.
-
-## 2. Import Analytics Rules
-
-```text
-Analytics/
-├── suspicious-signin-rule.json
-├── impossible-travel-rule.json
-└── brute-force-detection-rule.json
-```
-
-Deploy the detection rules into Sentinel.
-
-## 3. Configure Automation Rules
-
-```text
-Automation/
-├── automation-rule.json
-└── high-severity-automation-rule.json
-```
-
-Connect the rules to the AI enrichment playbook.
-
-## 4. Deploy Logic Apps
-
-```text
-Playbooks/
-├── chatgpt-incident-playbook.json
-└── severity-routing-playbook.json
-```
-
-Configure:
-
-- Azure OpenAI Endpoint
-- API Authentication
-- Incident Permissions
-- HTTP Connectors
-
-## 5. Configure Environment Variables
-
-```env
-OPENAI_API_KEY=
-AZURE_OPENAI_ENDPOINT=
-AZURE_OPENAI_DEPLOYMENT=
-SENTINEL_WORKSPACE_ID=
-AZURE_SUBSCRIPTION_ID=
-AZURE_TENANT_ID=
-LOGIC_APP_URL=
-```
-
----
-
-# 📊 SOC Workflow
-
-1. Detection
-2. Incident Creation
-3. Automation Trigger
-4. AI Analysis
-5. Enrichment
-6. Analyst Review
-7. Remediation
-
----
-
-# 📈 Engineering Highlights
-
-- ✔ Detection Engineering with KQL
-- ✔ AI-Powered Threat Analysis
-- ✔ Automated Incident Enrichment
-- ✔ Cloud-Native Security Architecture
-- ✔ Security Workflow Orchestration
-- ✔ SIEM + SOAR Integration
-- ✔ Enterprise Security Automation
-
----
-
-# 🎯 Skills Demonstrated
-
-- Microsoft Sentinel
-- SIEM Engineering
-- SOAR Automation
-- Azure Logic Apps
-- Azure OpenAI
-- Threat Detection
-- Incident Response
-- Security Operations
-- KQL Query Development
-- Cloud Security
-- SOC Automation
-- Cybersecurity Engineering
-
----
-
-# 🌎 Real-World Use Cases
-
-- Enterprise SOC Automation
-- Managed Security Service Providers (MSSPs)
-- Threat Monitoring Centers
-- Incident Response Teams
-- Security Operations Centers
-- Cloud Security Monitoring
-
----
-
-# 🔮 Future Improvements
-
-- MITRE ATT&CK Auto-Mapping
-- Threat Intelligence Feed Integration
-- Microsoft Defender XDR Integration
-- IOC Reputation Scoring
-- Multi-Tenant SOC Support
-- Automated Containment Actions
-- Microsoft Security Copilot Integration
-- Machine Learning Risk Scoring
-
----
-
-# 📜 License
-
-MIT License
-
----
-
-# 📌 Project Summary
-
-SentinelAI demonstrates how modern Security Operations Centers can combine SIEM, SOAR, and AI technologies to automate incident investigation, reduce analyst workload, and accelerate threat response using Microsoft Sentinel, Azure Logic Apps, and Azure OpenAI.
